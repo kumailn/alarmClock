@@ -11,7 +11,7 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "In Receiver", Toast.LENGTH_SHORT).show();
-        Log.e("In the receiver", "");
+        ///Log.e("In the receiver", "");
         Intent ii = new Intent(context, MyService.class);
         context.startService(ii);
     }
