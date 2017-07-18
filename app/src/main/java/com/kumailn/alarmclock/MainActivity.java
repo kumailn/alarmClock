@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final TimePicker pickTime = (TimePicker)findViewById(R.id.timePicker);
         Button checkTime = (Button)findViewById(R.id.checkTimeButton);
+        Button stopTime = (Button)findViewById(R.id.stopTime);
         //Alarm manager object initialization
         alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         final Calendar calendar = Calendar.getInstance();
@@ -43,10 +44,22 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(String.valueOf(calendar.getTimeInMillis()), " time in milis");
 
                 Intent i = new Intent(MainActivity.this, MyReceiver.class);
+                i.putExtra("ON", true);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, i, 0);
+
                 alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  pendingIntent);
 
+
+
                 Toast.makeText(MainActivity.this, hour + " " + minute, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        stopTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopService(new Intent(getApplicationContext(), MyService.class));
+
             }
         });
 

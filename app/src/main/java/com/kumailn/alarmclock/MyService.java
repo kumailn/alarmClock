@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -18,6 +19,8 @@ public class MyService extends Service {
     public MyService() {
     }
 
+    Ringtone ringtone;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -25,14 +28,20 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        boolean Alarm_State = intent.getBooleanExtra("ON", false);
+
+        Log.e("Alarm State:", String.valueOf(Alarm_State));
+
         Toast.makeText(getBaseContext(), "In service", Toast.LENGTH_SHORT).show();
         Log.e("In service","");
         //NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Intent intent_main = new Intent(this.getApplicationContext(), MainActivity.class);
         Uri alarmUri;
-        alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        //alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        alarmUri = Uri.parse("android.resource://" + "com.kumailn.alarmclock/" + "raw/fellow");
 
-        Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), alarmUri);
+        ringtone = RingtoneManager.getRingtone(getApplicationContext(), alarmUri);
         ringtone.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).build());
 
         ringtone.play();
@@ -47,5 +56,17 @@ public class MyService extends Service {
 
 
         return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(ringtone != null){
+            ringtone.stop();
+            Log.e("Ringtone"," sucessfully stopped");
+        }
+
+        Log.e("Service","Now Shutting Down");
+        this.stopSelf();
     }
 }
