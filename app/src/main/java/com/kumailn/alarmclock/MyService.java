@@ -30,6 +30,7 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         boolean Alarm_State = intent.getBooleanExtra("ON", false);
+        String myURI = intent.getStringExtra("URI");
 
         Log.e("Alarm State:", String.valueOf(Alarm_State));
 
@@ -39,7 +40,12 @@ public class MyService extends Service {
         Intent intent_main = new Intent(this.getApplicationContext(), MainActivity.class);
         Uri alarmUri;
         //alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        alarmUri = Uri.parse("android.resource://" + "com.kumailn.alarmclock/" + "raw/fellow");
+        if(!(myURI.equals("NONE"))){
+            alarmUri = Uri.parse(myURI);
+        }
+        else{
+            alarmUri = Uri.parse("android.resource://" + "com.kumailn.alarmclock/" + "raw/fellow");
+        }
 
         ringtone = RingtoneManager.getRingtone(getApplicationContext(), alarmUri);
         ringtone.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).build());

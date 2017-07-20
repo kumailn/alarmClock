@@ -13,8 +13,10 @@ public class MyReceiver extends BroadcastReceiver {
         Toast.makeText(context, "In Receiver", Toast.LENGTH_SHORT).show();
         ///Log.e("In the receiver", "");
         boolean Alarm_State = intent.getBooleanExtra("ON", false);
+        String myURI = intent.getStringExtra("URI");
         Intent ii = new Intent(context, MyService.class);
         ii.putExtra("ON", Alarm_State);
+        ii.putExtra("URI", myURI);
         context.startService(ii);
     }
 }

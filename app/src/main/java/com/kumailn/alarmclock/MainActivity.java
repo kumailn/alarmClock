@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent i = new Intent(MainActivity.this, MyReceiver.class);
                 i.putExtra("ON", true);
+                i.putExtra("URI", myURI);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, i, 0);
 
                 alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  pendingIntent);
