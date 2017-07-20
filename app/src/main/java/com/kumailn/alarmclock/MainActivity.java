@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     PendingIntent pendingIntent;
     AlarmManager alarm_manager;
-    String myURI = "";
+    String myURI = "NONE";
     //Open File Dialog
 
 
@@ -87,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
+    stopTime.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            Toast.makeText(getApplicationContext(), myURI, Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    });
 
     }
 
