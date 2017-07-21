@@ -69,7 +69,7 @@ public class MyService extends Service {
         super.onDestroy();
         if(ringtone != null){
             ringtone.stop();
-            Log.e("Ringtone"," sucessfully stopped");
+            Log.e("Ringtone"," success fully stopped");
         }
 
         Log.e("Service","Now Shutting Down");

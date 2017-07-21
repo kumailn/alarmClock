@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     PendingIntent pendingIntent;
     AlarmManager alarm_manager;
     String myURI = "NONE";
+    Uri aa;
+
     //Open File Dialog
 
 
@@ -91,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
     stopTime.setOnLongClickListener(new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
-            Toast.makeText(getApplicationContext(), myURI, Toast.LENGTH_SHORT).show();
+            File file= new File(aa.getPath());
+            Toast.makeText(getApplicationContext(), String.valueOf(file.getName()), Toast.LENGTH_SHORT).show();
             return true;
         }
     });
@@ -103,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==123 && resultCode==RESULT_OK) {
             Uri selectedfile = data.getData(); //The uri with the location of the file
+            aa = selectedfile;
+
+            Toast.makeText(getApplicationContext(), String.valueOf("Ringtone Set Successfully"), Toast.LENGTH_SHORT).show();
+
             myURI = String.valueOf(selectedfile);
         }
     }
