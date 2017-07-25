@@ -1,15 +1,10 @@
 package com.kumailn.alarmclock;
 
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Environment;
-import android.os.SystemClock;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     String myURI = "NONE";
     Uri aa;
 
-    //Open File Dialog
 
 
     @Override
