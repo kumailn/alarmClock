@@ -1,5 +1,4 @@
 package com.kumailn.alarmclock;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -21,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
     AlarmManager alarm_manager;
     String myURI = "NONE";
     Uri aa;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
