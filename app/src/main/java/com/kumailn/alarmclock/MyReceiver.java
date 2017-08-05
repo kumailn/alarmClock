@@ -18,5 +18,5 @@ public class MyReceiver extends BroadcastReceiver {
         ii.putExtra("ON", Alarm_State);
         ii.putExtra("URI", myURI);
         context.startService(ii);
-    }
-}
+        }
+        }
