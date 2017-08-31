@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.sax.StartElementListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         final TimePicker pickTime = (TimePicker)findViewById(R.id.timePicker);
         Button checkTime = (Button)findViewById(R.id.checkTimeButton);
         Button stopTime = (Button)findViewById(R.id.stopTime);
+        Button snoozeButton = (Button)findViewById(R.id.snoozeButton);
+
         //Alarm manager object initialization
         alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         final Calendar calendar = Calendar.getInstance();
@@ -58,6 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Toast.makeText(MainActivity.this, hour + " " + minute, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        snoozeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopService(new Intent(getApplicationContext(), MyService.class));
+                calendar.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+                        Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), 0);
+
+                Log.e(String.valueOf(calendar.HOUR_OF_DAY), String.valueOf(calendar.MINUTE));
+                Intent i = new Intent(MainActivity.this, MyReceiver.class);
+                i.putExtra("ON", true);
+                i.putExtra("URI", myURI);
+                pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, i, 0);
+
+                alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  pendingIntent);
             }
         });
 
