@@ -1,5 +1,6 @@
 package com.kumailn.alarmclock;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,11 +16,16 @@ import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.sql.Time;
+
 public class MyService extends Service {
     public MyService() {
     }
 
+
+    AlarmManager alarm_manager;
     Ringtone ringtone;
+    PendingIntent pendingIntent;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -29,8 +35,26 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+
         boolean Alarm_State = intent.getBooleanExtra("ON", false);
+        boolean Alarm_Type = intent.getBooleanExtra("DYNAMIC", false);
+        long Time_In_Milis = intent.getLongExtra("TIME", 0);
         String myURI = intent.getStringExtra("URI");
+
+        if (Alarm_Type){
+            alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            Intent i = new Intent(getApplicationContext(), MyReceiver.class);
+            i.putExtra("ON", true);
+            i.putExtra("URI", myURI);
+            i.putExtra("DYNAMIC", true);
+            i.putExtra("TIME", System.currentTimeMillis());
+            Log.e("Service_State: ", String.valueOf(Alarm_State));
+            Log.e("Service_Dynamic: ", String.valueOf(Alarm_Type));
+            Log.e("Service_Time: ", String.valueOf(Time_In_Milis));
+            pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, 0);
+            alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000*60*5,  pendingIntent);
+            return START_NOT_STICKY;
+        }
 
         Log.e("Alarm State:", String.valueOf(Alarm_State));
 

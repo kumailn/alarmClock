@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Button checkTime = (Button)findViewById(R.id.checkTimeButton);
         Button stopTime = (Button)findViewById(R.id.stopTime);
         Button snoozeButton = (Button)findViewById(R.id.snoozeButton);
+        //Button setRepeating = (Button)findViewById(R.id.repeatButton);
 
         //Alarm manager object initialization
         alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(MainActivity.this, MyReceiver.class);
                 i.putExtra("ON", true);
                 i.putExtra("URI", myURI);
+                i.putExtra("DYNAMIC", false);
+                i.putExtra("TIME", 1);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, i, 0);
 
                 alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  pendingIntent);
@@ -63,6 +66,21 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, hour + " " + minute, Toast.LENGTH_LONG).show();
             }
         });
+
+        /*setRepeating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+                        pickTime.getHour(), pickTime.getMinute(), 0);
+                Intent ii = new Intent(MainActivity.this, MyReceiver.class);
+                ii.putExtra("REPEAT", true);
+                ii.putExtra("URI", myURI);
+                ii.putExtra("ON", true);
+
+                alarm_manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60000, pendingIntent);
+
+            }
+        });*/
 
         snoozeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     .setType("*/*")
                     .setAction(Intent.ACTION_GET_CONTENT);
 
-            startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
+            startActivityForResult(Intent.createChooser(intent, "Select a file:"), 123);
             return true;
         }
     });
@@ -110,6 +128,32 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     });
+
+
+        snoozeButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                calendar.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+                        pickTime.getHour(), pickTime.getMinute(), 0);
+
+                Log.e(String.valueOf(calendar.getTimeInMillis()), " time in milis");
+
+                Intent i = new Intent(MainActivity.this, MyReceiver.class);
+                i.putExtra("ON", true);
+                i.putExtra("URI", myURI);
+                i.putExtra("DYNAMIC", true);
+                i.putExtra("TIME", calendar.getTimeInMillis());
+                pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, i, 0);
+
+                alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  pendingIntent);
+
+
+
+                Toast.makeText(MainActivity.this, "Dynamic set", Toast.LENGTH_LONG).show();
+
+                return true;
+            }
+        });
 
     }
 
